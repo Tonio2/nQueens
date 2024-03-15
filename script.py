@@ -36,23 +36,28 @@ class NQueens:
             return False
         return True
 
-    def solve(self):
+    def solve(self, row):
         if len(self.moves) == self.size:
             self.solutions_count += 1
             self.solutions.append(copy.deepcopy(self.board))
             return None
-        for row in range(self.size):
-            for col in range(self.size):
-                if self.is_legal(row, col):
-                    self.board[row, col] = 1
-                    self.moves.append((row, col))
-                    self.solve()
-                    self.board[row, col] = 0
+        for col in range(self.size):
+            if self.is_legal(row, col):
+                self.board[row, col] = 1
+                self.moves.append((row, col))
+                self.solve(row + 1)
+                self.board[row, col] = 0
+                self.moves.pop()
 
 
 if __name__ == "__main__":
-    n_queens = NQueens(4)
-    n_queens.solve()
+    n_queens = NQueens(5)
+    import pdb
+
+    # pdb.set_trace()
+    n_queens.solve(0)
+
+    print(n_queens.solutions_count)
 
     for sol in n_queens.solutions:
         print(sol)
